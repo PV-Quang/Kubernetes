@@ -104,6 +104,6 @@ apt-mark hold kubelet kubeadm kubectl
 
 echo "[INFO] Join node begin..."
 sleep 3
-kubeadm join master-04.pvq.lab:6443 --token ki2kcr.wr00y4h2r1bi88hd --discovery-token-ca-cert-hash sha256:df431d86eb49fe6ebaebe10c526d68d3b7e24e1ec4a73898614adb650f1ae549
+kubeadm join master-04.pvq.lab:6443 --token czfeg6.vkh5lqonvnn6f7fk --discovery-token-ca-cert-hash sha256:df431d86eb49fe6ebaebe10c526d68d3b7e24e1ec4a73898614adb650f1ae549
 
 echo "[INFO] Join node OK"
