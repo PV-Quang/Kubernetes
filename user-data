@@ -1,0 +1,18 @@
+#cloud-config
+package_update: false
+package_upgrade: false
+
+runcmd:
+  - |
+    set -e
+    echo "[INFO] Bootstrap started"
+
+    curl -fsSL https://raw.githubusercontent.com/PV-Quang/Linux/main/node-01.sh \
+      -o /usr/local/bin/k8s-master.sh
+
+    chmod +x /usr/local/bin/k8s-master.sh
+
+    /usr/local/bin/k8s-master.sh
+
+power_state:
+  mode: reboot
