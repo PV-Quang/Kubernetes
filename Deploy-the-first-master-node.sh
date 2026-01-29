@@ -151,7 +151,7 @@ kubectl apply --validate=false -f https://raw.githubusercontent.com/projectcalic
 sleep 15
 kubectl apply --validate=false -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/custom-resources.yaml
 sleep 10
-echo "[INFO] Done at $(date)"
+echo "[INFO]Run calico done"
 
 # ---------------------------------------------------------------------
 # NEW: WAIT NODE READY (SAU KHI APPLY CALICO)
@@ -177,3 +177,5 @@ chmod -R 777 /tmp/cluster-certs
 cp /etc/kubernetes/pki/{ca.*,sa.*,front-proxy-ca.*} /tmp/cluster-certs/
 cp /etc/kubernetes/pki/etcd/ca.* /tmp/cluster-certs/etcd
 cp /tmp/master-join-cmd /tmp/node-join-cmd /tmp/cluster-certs/
+
+echo "[INFO] Done at $(date)"
