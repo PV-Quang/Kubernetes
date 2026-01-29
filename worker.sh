@@ -1,29 +1,50 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+########################################
+# CUSTOMER CONFIGURATION (EDIT HERE ONLY)
+########################################
+# ---- Network ----
+NET_IFACE="ens192"
+IP_ADDR="40.0.0.24"
+CIDR="24"
+GATEWAY="40.0.0.1"
+DNS_ADDR="40.0.0.250"
+DNS_SEARCH="pvq.lab"
+
+# ---- Hostname ----
+HOSTNAME_FQDN="worker-04.pvq.lab"
+
+# ---- Join token ----
+K8S_JOIN_CMD="kubeadm join master-04.pvq.lab:6443 --token czfeg6.vkh5lqonvnn6f7fk --discovery-token-ca-cert-hash sha256:df431d86eb49fe6ebaebe10c526d68d3b7e24e1ec4a73898614adb650f1ae549"
+
+########################################
+# END CUSTOMER CONFIGURATION
+########################################
+
 exec > >(tee -a /var/log/k8s.log) 2>&1
 
 echo "[INFO] Start at $(date)"
 
 rm -rf /etc/netplan/*
 
-cat > /etc/netplan/k8s.yaml <<'EOF'
+cat > /etc/netplan/k8s.yaml <<EOF
 network:
   version: 2
   ethernets:
-    ens192:
+    ${NET_IFACE}:
       dhcp4: false
       dhcp6: false
       addresses:
-        - 40.0.0.24/24
+        - ${IP_ADDR}/${CIDR}
       routes:
         - to: default
-          via: 40.0.0.1
+          via: ${GATEWAY}
       nameservers:
         addresses:
-          - 40.0.0.250
+          - ${DNS_ADDR}
         search:
-          - pvq.lab
+          - ${DNS_SEARCH}
 EOF
 
 netplan apply
@@ -32,7 +53,7 @@ systemctl enable --now systemd-resolved.service
 systemctl restart systemd-resolved.service
 ln -sf /var/run/systemd/resolve/resolv.conf /etc/resolv.conf
 
-hostnamectl set-hostname worker-04.pvq.lab
+hostnamectl set-hostname "$HOSTNAME_FQDN"
 timedatectl set-timezone Asia/Ho_Chi_Minh
 
 echo "[INFO] Waiting for network..."
@@ -104,6 +125,6 @@ apt-mark hold kubelet kubeadm kubectl
 
 echo "[INFO] Join node begin..."
 sleep 3
-kubeadm join master-04.pvq.lab:6443 --token czfeg6.vkh5lqonvnn6f7fk --discovery-token-ca-cert-hash sha256:df431d86eb49fe6ebaebe10c526d68d3b7e24e1ec4a73898614adb650f1ae549
 
+eval "$K8S_JOIN_CMD"
 echo "[INFO] Join node OK"
