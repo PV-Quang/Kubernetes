@@ -1,34 +1,64 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
+########################################
+# CUSTOMER CONFIGURATION (EDIT HERE ONLY)
+########################################
+# ---- Network ----
+NET_IFACE="ens192"
+IP_ADDR="40.0.0.14"
+CIDR="24"
+GATEWAY="40.0.0.1"
+DNS_ADDR="40.0.0.250"
+DNS_SEARCH="pvq.lab"
+
+# ---- Hostname ----
+HOSTNAME_FQDN="master-04.pvq.lab"
+
+# ---- Kubernetes INIT ----
+K8S_INIT_CMD="kubeadm init \
+--pod-network-cidr 192.168.0.0/16 \
+--service-cidr 10.96.0.0/12 \
+--control-plane-endpoint master-04.pvq.lab \
+--apiserver-cert-extra-sans master-04.pvq.lab \
+--apiserver-cert-extra-sans 40.0.0.14 \
+--apiserver-cert-extra-sans master-04 \
+--apiserver-cert-extra-sans 61.14.236.249"
+
+########################################
+# END CUSTOMER CONFIGURATION
+########################################
+
 exec > >(tee -a /var/log/k8s.log) 2>&1
 echo "[INFO] Start at $(date)"
 
 rm -rf /etc/netplan/*
-cat > /etc/netplan/k8s.yaml <<'EOF'
+cat > /etc/netplan/k8s.yaml <<EOF
 network:
   version: 2
   ethernets:
-    ens192:
+    ${NET_IFACE}:
       dhcp4: false
       dhcp6: false
       addresses:
-        - 40.0.0.14/24
+        - ${IP_ADDR}/${CIDR}
       routes:
         - to: default
-          via: 40.0.0.1
+          via: ${GATEWAY}
       nameservers:
         addresses:
-          - 40.0.0.250
+          - ${DNS_ADDR}
         search:
-          - pvq.lab
+          - ${DNS_SEARCH}
 EOF
+
 
 netplan apply
 
 systemctl enable --now systemd-resolved.service
 systemctl restart systemd-resolved.service
 ln -sf /var/run/systemd/resolve/resolv.conf /etc/resolv.conf
-hostnamectl set-hostname master-04.pvq.lab
+hostnamectl set-hostname "$HOSTNAME_FQDN"
 timedatectl set-timezone Asia/Ho_Chi_Minh
 
 echo "[INFO] Waiting for network..."
@@ -40,9 +70,8 @@ for i in $(seq 1 30); do
   sleep 2
 done
 
-apt-get update -y
-apt-get upgrade -y
-apt-get install -y chrony
+apt update -y && apt upgrade -y
+apt install -y chrony
 systemctl enable --now chrony
 
 cat > /etc/chrony/chrony.conf <<'EOF'
@@ -98,7 +127,7 @@ apt update
 apt install -y kubelet kubeadm kubectl
 apt-mark hold kubelet kubeadm kubectl
 
-kubeadm init --pod-network-cidr 192.168.0.0/16 --service-cidr 10.96.0.0/12 --control-plane-endpoint master-04.pvq.lab --apiserver-cert-extra-sans 40.0.0.14 --apiserver-cert-extra-sans master-04 --apiserver-cert-extra-sans 61.14.236.249
+eval "$K8S_INIT_CMD"
 
 sleep 10
 mkdir -p /root/.kube
