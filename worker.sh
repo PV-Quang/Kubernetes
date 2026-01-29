@@ -65,9 +65,8 @@ for i in $(seq 1 30); do
   sleep 2
 done
 
-apt-get update -y
-apt-get upgrade -y
-apt-get install -y chrony
+apt update -y && apt upgrade -y
+apt install -y chrony
 systemctl enable --now chrony
 
 cat > /etc/chrony/chrony.conf <<'EOF'
