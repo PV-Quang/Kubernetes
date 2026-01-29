@@ -152,3 +152,14 @@ sleep 15
 kubectl apply --validate=false -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/custom-resources.yaml
 sleep 10
 echo "[INFO] Done at $(date)"
+
+kubeadm token create --print-join-command > /tmp/node-join-cmd
+cp /tmp/node-join-cmd /tmp/master-join-cmd
+
+CERT_KEY=$(kubeadm init phase upload-certs --upload-certs 2>/dev/null | grep -E '^[a-f0-9]{64}$')
+sed -i "s/\$/ --control-plane --certificate-key $CERT_KEY/" /tmp/master-join-cmd
+mkdir -p /tmp/cluster-certs/etcd
+chmod -R 777 /tmp/cluster-certs
+cp /etc/kubernetes/pki/{ca.*,sa.*,front-proxy-ca.*} /tmp/cluster-certs/
+cp /etc/kubernetes/pki/etcd/ca.* /tmp/cluster-certs/etcd
+cp /tmp/master-join-cmd /tmp/node-join-cmd /tmp/cluster-certs/
