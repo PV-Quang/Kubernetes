@@ -123,12 +123,3 @@ sleep 15
 kubectl apply --validate=false -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/custom-resources.yaml
 sleep 10
 echo "[INFO] Done at $(date)"
-
-runcmd:
-  - [ bash, -lc, "/usr/local/sbin/k8s.sh" ]
-
-power_state:
-  mode: reboot
-  message: "Reboot after cloud-init provisioning"
-  timeout: 60
-  condition: true
