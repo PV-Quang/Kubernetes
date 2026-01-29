@@ -153,20 +153,6 @@ kubectl apply --validate=false -f https://raw.githubusercontent.com/projectcalic
 sleep 10
 echo "[INFO]Run calico done"
 
-# ---------------------------------------------------------------------
-# NEW: WAIT NODE READY (SAU KHI APPLY CALICO)
-# ---------------------------------------------------------------------
-echo "[INFO] Waiting for node to become Ready (after CNI applied)..."
-for i in {1..90}; do
-  READY_NODE=$(KUBECONFIG=/root/.kube/config kubectl get nodes --no-headers 2>/dev/null | awk '$2=="Ready"{print $1}')
-  if [ -n "$READY_NODE" ]; then
-    echo "[INFO] Node Ready: $READY_NODE"
-    break
-  fi
-  echo "[INFO] Node not Ready yet, retrying..."
-  sleep 10
- done
-
 kubeadm token create --print-join-command > /tmp/node-join-cmd
 cp /tmp/node-join-cmd /tmp/master-join-cmd
 
