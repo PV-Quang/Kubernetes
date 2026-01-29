@@ -15,7 +15,7 @@ network:
       dhcp4: false
       dhcp6: false
       addresses:
-        - 40.0.0.15/24
+        - 40.0.0.24/24
       routes:
         - to: default
           via: 40.0.0.1
@@ -32,7 +32,7 @@ systemctl enable --now systemd-resolved.service
 systemctl restart systemd-resolved.service
 ln -sf /var/run/systemd/resolve/resolv.conf /etc/resolv.conf
 
-hostnamectl set-hostname master-05.pvq.lab
+hostnamectl set-hostname worker-04.pvq.lab
 timedatectl set-timezone Asia/Ho_Chi_Minh
 
 echo "[INFO] Waiting for network..."
