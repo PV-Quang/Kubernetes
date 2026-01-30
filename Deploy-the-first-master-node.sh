@@ -149,13 +149,9 @@ echo "[INFO] Applying Calico CNI..."
 
 kubectl apply --validate=false -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/tigera-operator.yaml
 
-echo "[INFO] Waiting for Calico CRDs..."
-for i in {1..60}; do
-  if kubectl get crd installations.operator.tigera.io >/dev/null 2>&1; then
-    echo "[INFO] Calico CRDs ready"
-    break
-  fi
-  sleep 5
+until kubectl api-resources | grep -q installations.operator.tigera.io; do
+  echo "Waiting for Installation CRD to be served..."
+  sleep 3
 done
 
 kubectl apply --validate=false -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/custom-resources.yaml
