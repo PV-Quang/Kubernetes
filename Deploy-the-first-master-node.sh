@@ -149,16 +149,18 @@ echo "[INFO] Applying Calico CNI..."
 
 kubectl apply --validate=false -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/tigera-operator.yaml
 
-# Chờ CRD được establish
-kubectl wait \
-  --for=condition=Established \
-  crd/installations.operator.tigera.io \
-  --timeout=180s
+echo "[INFO] Waiting for Tigera Installation API to be served..."
 
-# Chờ API serve Installation
-until kubectl api-resources | grep -q "installations.*operator.tigera.io"; do
+for i in {1..60}; do
+  if kubectl api-resources --api-group=operator.tigera.io \
+     | grep -q Installation; then
+    echo "[INFO] Tigera Installation API is ready"
+    break
+  fi
+  echo "[INFO] Installation API not ready yet ($i/60)"
   sleep 5
 done
+
 
 kubectl apply --validate=false -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/custom-resources.yaml
 sleep 10
