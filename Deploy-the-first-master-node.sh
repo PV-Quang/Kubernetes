@@ -91,7 +91,7 @@ EOF
 
 systemctl restart chrony
 systemctl enable chrony
-sed -i "2i 127.0.1.1 $HOSTNAME" /etc/hosts
+sed -i "2i 127.0.1.1 $HOSTNAME_FQDN" /etc/hosts
 sed -i '3i\\' /etc/hosts
 
 swapoff -a
