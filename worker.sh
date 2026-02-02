@@ -129,7 +129,7 @@ sleep 3
 
 mkdir -p /root/k8s
 wget -O /root/k8s/node-join.sh http://40.0.0.14:8080/node-join-cmd.sh
-chmod +x /root/k8s/node-join.sh
+chmod +x /root/k8s/node-join-cmd.sh
 /root/k8s/node-join-cmd.sh
 
 echo "[INFO] Join node OK"
