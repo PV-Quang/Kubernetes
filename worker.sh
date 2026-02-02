@@ -16,7 +16,7 @@ DNS_SEARCH="pvq.lab"
 HOSTNAME_FQDN="worker-04.pvq.lab"
 
 # ---- Join token ----
-K8S_JOIN_CMD="kubeadm join master-04.pvq.lab:6443 --token czfeg6.vkh5lqonvnn6f7fk --discovery-token-ca-cert-hash sha256:df431d86eb49fe6ebaebe10c526d68d3b7e24e1ec4a73898614adb650f1ae549"
+K8S_JOIN_CMD="kubeadm join master-04.pvq.lab:6443 --token ljck61.vplxgujyi82sf6is --discovery-token-ca-cert-hash sha256:9fba54d9a4c5db78906af8e6f067aed7876841043dca4ab69fca24462b5e7626"
 
 ########################################
 # END CUSTOMER CONFIGURATION
