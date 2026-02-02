@@ -177,6 +177,6 @@ cp /etc/kubernetes/pki/{ca.*,sa.*,front-proxy-ca.*} /root/cluster-certs/
 cp /etc/kubernetes/pki/etcd/ca.* /root/cluster-certs/etcd
 cp /root/master-join-cmd /root/node-join-cmd /root/cluster-certs/
 
-nohup python3 -m http.server 8080 --directory /cluster-certs/ &
+nohup python3 -m http.server 8080 --directory /root/cluster-certs/ &
 
 echo "[INFO] Done at $(date)"
