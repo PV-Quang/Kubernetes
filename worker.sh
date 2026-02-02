@@ -16,7 +16,7 @@ DNS_SEARCH="pvq.lab"
 HOSTNAME_FQDN="worker-04.pvq.lab"
 
 # ---- Join token ----
-K8S_JOIN_CMD="kubeadm join master-04.pvq.lab:6443 --token ljck61.vplxgujyi82sf6is --discovery-token-ca-cert-hash sha256:9fba54d9a4c5db78906af8e6f067aed7876841043dca4ab69fca24462b5e7626"
+#K8S_JOIN_CMD="kubeadm join master-04.pvq.lab:6443 --token ljck61.vplxgujyi82sf6is --discovery-token-ca-cert-hash sha256:9fba54d9a4c5db78906af8e6f067aed7876841043dca4ab69fca24462b5e7626"
 
 ########################################
 # END CUSTOMER CONFIGURATION
@@ -125,5 +125,9 @@ apt-mark hold kubelet kubeadm kubectl
 echo "[INFO] Join node begin..."
 sleep 3
 
-eval "$K8S_JOIN_CMD"
+#eval "$K8S_JOIN_CMD"
+chmod +x /usr/local/bin/join.sh
+
+/usr/local/bin/join.sh
+
 echo "[INFO] Join node OK"
