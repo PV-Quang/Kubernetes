@@ -128,7 +128,7 @@ sleep 3
 #eval "$K8S_JOIN_CMD"
 
 wget http://40.0.0.14:8080/node-join-cmd.sh
-chmod +x /usr/local/bin/join.sh
-/usr/local/bin/join.sh
+chmod +x /root/k8s/node-join-cmd.sh
+/root/k8s/node-join-cmd.sh
 
 echo "[INFO] Join node OK"
