@@ -128,7 +128,7 @@ sleep 3
 #eval "$K8S_JOIN_CMD"
 
 mkdir -p /root/k8s
-wget -O /root/k8s/node-join.sh http://40.0.0.14:8080/node-join-cmd.sh
+wget -O /root/k8s/node-join-cmd.sh http://40.0.0.14:8080/node-join-cmd.sh
 chmod +x /root/k8s/node-join-cmd.sh
 /root/k8s/node-join-cmd.sh
 
