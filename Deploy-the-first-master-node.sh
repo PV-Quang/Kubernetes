@@ -69,7 +69,7 @@ for i in $(seq 1 30); do
   fi
   sleep 2
 done
-
+sleep 20
 apt update -y && apt upgrade -y
 apt install -y chrony
 systemctl enable --now chrony
