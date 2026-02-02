@@ -166,15 +166,15 @@ kubectl apply --validate=false -f https://raw.githubusercontent.com/projectcalic
 sleep 10
 echo "[INFO]Run calico done"
 
-kubeadm token create --print-join-command > /tmp/node-join-cmd
-cp /tmp/node-join-cmd /tmp/master-join-cmd
+kubeadm token create --print-join-command > /root/node-join-cmd
+cp /root/node-join-cmd /root/master-join-cmd
 
 CERT_KEY=$(kubeadm init phase upload-certs --upload-certs 2>/dev/null | grep -E '^[a-f0-9]{64}$')
-sed -i "s/\$/ --control-plane --certificate-key $CERT_KEY/" /tmp/master-join-cmd
-mkdir -p /tmp/cluster-certs/etcd
-chmod -R 777 /tmp/cluster-certs
-cp /etc/kubernetes/pki/{ca.*,sa.*,front-proxy-ca.*} /tmp/cluster-certs/
-cp /etc/kubernetes/pki/etcd/ca.* /tmp/cluster-certs/etcd
-cp /tmp/master-join-cmd /tmp/node-join-cmd /tmp/cluster-certs/
+sed -i "s/\$/ --control-plane --certificate-key $CERT_KEY/" /root/master-join-cmd
+mkdir -p /root/cluster-certs/etcd
+chmod -R 777 /root/cluster-certs
+cp /etc/kubernetes/pki/{ca.*,sa.*,front-proxy-ca.*} /root/cluster-certs/
+cp /etc/kubernetes/pki/etcd/ca.* /root/cluster-certs/etcd
+cp /root/master-join-cmd /root/node-join-cmd /root/cluster-certs/
 
 echo "[INFO] Done at $(date)"
