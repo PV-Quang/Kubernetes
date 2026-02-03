@@ -65,6 +65,8 @@ for i in $(seq 1 30); do
   sleep 2
 done
 
+echo "[INFO] Waiting for update..."
+sleep 20
 apt update -y && apt upgrade -y
 apt install -y chrony
 systemctl enable --now chrony
@@ -118,6 +120,9 @@ systemctl restart containerd
 apt install -y apt-transport-https ca-certificates curl gpg
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.34/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.34/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
+
+echo "[INFO] Waiting for update..."
+sleep 20
 apt update
 apt install -y kubelet kubeadm kubectl
 apt-mark hold kubelet kubeadm kubectl
