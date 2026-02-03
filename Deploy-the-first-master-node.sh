@@ -52,7 +52,6 @@ network:
           - ${DNS_SEARCH}
 EOF
 
-
 netplan apply
 
 systemctl enable --now systemd-resolved.service
@@ -182,6 +181,10 @@ cp /etc/kubernetes/pki/{ca.*,sa.*,front-proxy-ca.*} /root/cluster-certs/
 cp /etc/kubernetes/pki/etcd/ca.* /root/cluster-certs/etcd
 cp /root/master-join-cmd /root/node-join-cmd /root/cluster-certs/
 sleep 5
+
+cd /root
+tar czf cluster-certs.tar.gz cluster-certs
+cp /root/cluster-certs.tar.gz /root/cluster-certs
 
 cat <<'EOF' >/etc/systemd/system/k8s-bootstrap-http.service
 [Unit]
