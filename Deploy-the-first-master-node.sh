@@ -178,7 +178,28 @@ chmod -R 777 /root/cluster-certs
 cp /etc/kubernetes/pki/{ca.*,sa.*,front-proxy-ca.*} /root/cluster-certs/
 cp /etc/kubernetes/pki/etcd/ca.* /root/cluster-certs/etcd
 cp /root/master-join-cmd /root/node-join-cmd /root/cluster-certs/
-sleep 10
-nohup python3 -m http.server 8080 --directory /root/cluster-certs/ > /var/log/http-bootstrap.log 2>&1 &
+sleep 5
+
+cat <<'EOF' >/etc/systemd/system/k8s-bootstrap-http.service
+[Unit]
+Description=K8s Bootstrap HTTP Server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -m http.server 8080 --directory /root/cluster-certs
+WorkingDirectory=/root/cluster-certs
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reexec
+systemctl daemon-reload
+systemctl enable k8s-bootstrap-http
+systemctl start k8s-bootstrap-http
+
 
 echo "[INFO] Done at $(date)"
