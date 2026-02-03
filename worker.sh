@@ -137,6 +137,7 @@ wget -O /root/k8s/node-join-cmd.sh http://40.0.0.14:8080/node-join-cmd
 chmod +x /root/k8s/node-join-cmd.sh
 /root/k8s/node-join-cmd.sh
 
+echo "[INFO] Join node OK"
 sleep 10
 
-echo "[INFO] Join node OK"
+echo "[INFO] Done at $(date)"
