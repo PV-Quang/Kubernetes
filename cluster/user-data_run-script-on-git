@@ -7,7 +7,7 @@ runcmd:
     set -e
     echo "[INFO] Bootstrap started"
 
-    curl -fsSL https://raw.githubusercontent.com/PV-Quang/Kubernetes/main/worker.sh -o /usr/local/bin/k8s.sh
+    curl -fsSL https://raw.githubusercontent.com/PV-Quang/Kubernetes/cluster/master-01.sh -o /usr/local/bin/k8s.sh
 
     chmod +x /usr/local/bin/k8s.sh
 
