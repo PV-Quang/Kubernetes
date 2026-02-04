@@ -6,24 +6,31 @@ set -euo pipefail
 ########################################
 # ---- Network ----
 NET_IFACE="ens192"
-IP_ADDR="40.0.0.14"
+IP_ADDR="40.0.0.11"
 CIDR="24"
 GATEWAY="40.0.0.1"
 DNS_ADDR="40.0.0.250"
 DNS_SEARCH="pvq.lab"
 
 # ---- Hostname ----
-HOSTNAME_FQDN="master-04.pvq.lab"
+HOSTNAME_FQDN="master-01.pvq.lab"
 
 # ---- Kubernetes INIT ----
 K8S_INIT_CMD="kubeadm init \
 --pod-network-cidr 192.168.0.0/16 \
 --service-cidr 10.96.0.0/12 \
---control-plane-endpoint master-04.pvq.lab \
---apiserver-cert-extra-sans master-04.pvq.lab \
---apiserver-cert-extra-sans 40.0.0.14 \
---apiserver-cert-extra-sans master-04 \
---apiserver-cert-extra-sans 61.14.236.249"
+--control-plane-endpoint k8s-tke.quangpv.tech:6443 \
+--apiserver-cert-extra-sans k8s-tke.pvq.lab \
+--apiserver-cert-extra-sans k8s-tke.quangpv.tech \
+--apiserver-cert-extra-sans 40.0.0.10 \
+--apiserver-cert-extra-sans master-01 \
+--apiserver-cert-extra-sans master-02 \
+--apiserver-cert-extra-sans master-03 \
+--apiserver-cert-extra-sans 40.0.0.11 \
+--apiserver-cert-extra-sans 40.0.0.12 \
+--apiserver-cert-extra-sans 40.0.0.13 \
+--apiserver-cert-extra-sans 61.14.236.249 \
+--upload-certs"
 
 ########################################
 # END CUSTOMER CONFIGURATION
