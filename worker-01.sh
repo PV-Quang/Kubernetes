@@ -6,17 +6,14 @@ set -euo pipefail
 ########################################
 # ---- Network ----
 NET_IFACE="ens192"
-IP_ADDR="40.0.0.24"
+IP_ADDR="40.0.0.21"
 CIDR="24"
 GATEWAY="40.0.0.1"
 DNS_ADDR="40.0.0.250"
 DNS_SEARCH="pvq.lab"
 
 # ---- Hostname ----
-HOSTNAME_FQDN="worker-04.pvq.lab"
-
-# ---- Join token ----
-#K8S_JOIN_CMD="kubeadm join master-04.pvq.lab:6443 --token ljck61.vplxgujyi82sf6is --discovery-token-ca-cert-hash sha256:9fba54d9a4c5db78906af8e6f067aed7876841043dca4ab69fca24462b5e7626"
+HOSTNAME_FQDN="worker-01.pvq.lab"
 
 ########################################
 # END CUSTOMER CONFIGURATION
@@ -130,10 +127,8 @@ apt-mark hold kubelet kubeadm kubectl
 echo "[INFO] Join node begin..."
 sleep 3
 
-#eval "$K8S_JOIN_CMD"
-
 mkdir -p /root/k8s
-wget -O /root/k8s/node-join-cmd.sh http://40.0.0.14:8080/node-join-cmd
+wget -O /root/k8s/node-join-cmd.sh http://master-01:8080/node-join-cmd
 chmod +x /root/k8s/node-join-cmd.sh
 /root/k8s/node-join-cmd.sh
 
