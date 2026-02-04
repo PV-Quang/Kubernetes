@@ -130,7 +130,7 @@ sleep 3
 
 mkdir -p /root/k8s
 wget -O /root/k8s/cluster-certs.tar.gz http://master-01:8080/cluster-certs.tar.gz
-cd k8s
+cd /root/k8s
 tar xzf cluster-certs.tar.gz
 
 mkdir -p /etc/kubernetes/pki/etcd
