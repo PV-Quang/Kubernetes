@@ -6,7 +6,7 @@ set -euo pipefail
 ########################################
 # ---- Network ----
 NET_IFACE="ens192"
-IP_ADDR="40.0.0.15"
+IP_ADDR="40.0.0.12"
 CIDR="24"
 GATEWAY="40.0.0.1"
 DNS_ADDR="40.0.0.250"
@@ -124,12 +124,12 @@ apt update
 apt install -y kubelet kubeadm kubectl
 apt-mark hold kubelet kubeadm kubectl
 
-echo "[INFO] Join masster-02 begin..."
+echo "[INFO] Join masster begin..."
 sleep 3
 
 
 mkdir -p /root/k8s
-wget -O /root/k8s/cluster-certs.tar.gz http://40.0.0.14:8080/cluster-certs.tar.gz
+wget -O /root/k8s/cluster-certs.tar.gz http://master-01:8080/cluster-certs.tar.gz
 cd k8s
 tar xzf cluster-certs.tar.gz
 
