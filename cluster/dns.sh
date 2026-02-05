@@ -109,9 +109,9 @@ options {
 EOF
 
 cat > /etc/bind/named.conf.internal-zones <<'EOF'
-zone "k8s.local" IN {
+zone "${DNS_SEARCH}" IN {
         type primary;
-        file "/etc/bind/k8s.local";
+        file "/etc/bind/${DNS_SEARCH}";
         allow-update { none; };
 };
 zone "0.0.20.in-addr.arpa" IN {
@@ -130,9 +130,9 @@ cat > /etc/default/named <<'EOF'
 OPTIONS="-u bind -4"
 EOF
 
-cat > /etc/bind/k8s.local <<'EOF'
+cat > /etc/bind/${DNS_SEARCH} <<'EOF'
 $TTL 86400
-@   IN  SOA     dns.k8s.local. root.k8s.local. (
+@   IN  SOA     dns.${DNS_SEARCH}. root.${DNS_SEARCH}. (
         ;; any numerical values are OK for serial number
         ;; recommended : [YYYYMMDDnn] (update date + number)
         2024042901  ;Serial
@@ -141,17 +141,16 @@ $TTL 86400
         604800      ;Expire
         86400       ;Minimum TTL
 )
-        IN  NS      dns.k8s.local.
+        IN  NS      dns.${DNS_SEARCH}.
         IN  A       20.0.0.250
 
 dns              IN  A       20.0.0.250
 master01         IN  A       20.0.0.11
-master02         IN  A       20.0.0.12
 EOF
 
 cat > /etc/bind/0.0.20.db <<'EOF'
 $TTL 86400
-@   IN  SOA     dns.k8s.local. root.k8s.local. (
+@   IN  SOA     dns.${DNS_SEARCH}. root.${DNS_SEARCH}. (
         2024042901  ;Serial
         3600        ;Refresh
         1800        ;Retry
@@ -159,10 +158,10 @@ $TTL 86400
         86400       ;Minimum TTL
 )
         ;; define Name Server
-        IN  NS      dns.k8s.local.
+        IN  NS      dns.${DNS_SEARCH}.
 
-250      IN  PTR     dns.k8s.local.
-11       IN  PTR     master01.k8s.local.
+250      IN  PTR     dns.${DNS_SEARCH}.
+11       IN  PTR     master01.${DNS_SEARCH}.
 EOF
 
 echo "[INFO] Enabling named..."
