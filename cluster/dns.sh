@@ -6,14 +6,17 @@ set -euo pipefail
 ########################################
 # ---- Network ----
 NET_IFACE="ens192"
+NET="20.0.0.0"
 IP_ADDR="20.0.0.250"
 CIDR="24"
 GATEWAY="20.0.0.1"
 DNS_ADDR="8.8.8.8"
 DNS_SEARCH="k8s.local"
+RE_ZONE="0.0.20"
+DNS_NAME="dns01"
 
 # ---- Hostname ----
-HOSTNAME_FQDN="dns.k8s.local"
+HOSTNAME_FQDN="${DNS_NAME}.k8s.local"
 
 ########################################
 # END CUSTOMER CONFIGURATION
@@ -99,7 +102,7 @@ EOF
 
 cat > /etc/bind/named.conf.options <<'EOF'
 acl internal-network {
-        20.0.0.0/24;
+        ${NET}/${CIDR};
 };
 options {
         directory "/var/cache/bind";
@@ -114,9 +117,9 @@ zone "${DNS_SEARCH}" IN {
         file "/etc/bind/${DNS_SEARCH}";
         allow-update { none; };
 };
-zone "0.0.20.in-addr.arpa" IN {
+zone "${RE_ZONE}.in-addr.arpa" IN {
         type primary;
-        file "/etc/bind/0.0.20.db";
+        file "/etc/bind/${RE_ZONE}.db";
         allow-update { none; };
 };
 EOF
@@ -132,7 +135,7 @@ EOF
 
 cat > /etc/bind/${DNS_SEARCH} <<'EOF'
 $TTL 86400
-@   IN  SOA     dns.${DNS_SEARCH}. root.${DNS_SEARCH}. (
+@   IN  SOA     ${DNS_NAME}.${DNS_SEARCH}. root.${DNS_SEARCH}. (
         ;; any numerical values are OK for serial number
         ;; recommended : [YYYYMMDDnn] (update date + number)
         2024042901  ;Serial
@@ -141,16 +144,16 @@ $TTL 86400
         604800      ;Expire
         86400       ;Minimum TTL
 )
-        IN  NS      dns.${DNS_SEARCH}.
-        IN  A       20.0.0.250
+        IN  NS      ${DNS_NAME}.${DNS_SEARCH}.
+        IN  A       ${IP_ADDR}
 
-dns              IN  A       20.0.0.250
+${DNS_NAME}              IN  A       ${IP_ADDR}
 master01         IN  A       20.0.0.11
 EOF
 
-cat > /etc/bind/0.0.20.db <<'EOF'
+cat > /etc/bind/${RE_ZONE}.db <<'EOF'
 $TTL 86400
-@   IN  SOA     dns.${DNS_SEARCH}. root.${DNS_SEARCH}. (
+@   IN  SOA     ${DNS_NAME}.${DNS_SEARCH}. root.${DNS_SEARCH}. (
         2024042901  ;Serial
         3600        ;Refresh
         1800        ;Retry
@@ -158,9 +161,9 @@ $TTL 86400
         86400       ;Minimum TTL
 )
         ;; define Name Server
-        IN  NS      dns.${DNS_SEARCH}.
+        IN  NS      ${DNS_NAME}.${DNS_SEARCH}.
 
-250      IN  PTR     dns.${DNS_SEARCH}.
+250      IN  PTR     ${DNS_NAME}.${DNS_SEARCH}.
 11       IN  PTR     master01.${DNS_SEARCH}.
 EOF
 
