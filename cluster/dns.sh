@@ -5,7 +5,7 @@ set -euo pipefail
 # CUSTOMER CONFIGURATION (EDIT HERE ONLY)
 ########################################
 # ---- Network ----
-NET_IFACE="ens191"
+NET_IFACE="ens192"
 NET="20.0.0.0"
 IP_ADDR="20.0.0.251"
 CIDR="24"
