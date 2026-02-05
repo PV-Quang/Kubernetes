@@ -16,7 +16,7 @@ RE_ZONE="0.0.20"
 DNS_NAME="dns01"
 
 # ---- Hostname ----
-HOSTNAME_FQDN="${DNS_NAME}.${DNS_SEARCH}"
+HOSTNAME_FQDN="dns01.lab.local"
 
 ########################################
 # END CUSTOMER CONFIGURATION
