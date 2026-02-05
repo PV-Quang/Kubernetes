@@ -11,7 +11,7 @@ IP_ADDR="20.0.0.251"
 CIDR="24"
 GATEWAY="20.0.0.1"
 DNS_ADDR="8.8.8.8"
-DNS_SEARCH="k8s.local"
+DNS_SEARCH="lab.local"
 RE_ZONE="0.0.20"
 DNS_NAME="dns01"
 
