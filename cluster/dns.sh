@@ -165,18 +165,9 @@ $TTL 86400
 11       IN  PTR     master01.k8s.local.
 EOF
 
-echo "[INFO] Enabling bind9..."
-systemctl enable --now bind9
-systemctl restart bind9
-
-echo "[INFO] Waiting for local DNS..."
-for i in $(seq 1 10); do
-  if dig @127.0.0.1 dns.k8s.local +short >/dev/null 2>&1; then
-    echo "[INFO] Local DNS OK"
-    break
-  fi
-  sleep 2
-done
+echo "[INFO] Enabling named..."
+systemctl enable --now named
+systemctl restart named
 
 echo "[INFO] Switching DNS to local server ${IP_ADDR}"
 
