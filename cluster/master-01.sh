@@ -135,6 +135,7 @@ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 echo "[INFO] Waiting for update..."
 sleep 20
 apt update
+sleep 10
 apt install -y kubelet kubeadm kubectl
 apt-mark hold kubelet kubeadm kubectl
 
