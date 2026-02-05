@@ -139,6 +139,8 @@ sleep 10
 apt install -y kubelet kubeadm kubectl
 apt-mark hold kubelet kubeadm kubectl
 
+sleep 10
+
 eval "$K8S_INIT_CMD"
 
 sleep 10
