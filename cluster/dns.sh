@@ -43,7 +43,7 @@ network:
         search:
           - ${DNS_SEARCH}
 EOF
-
+chmod 600 /etc/netplan/k8s.yaml
 netplan apply
 
 systemctl enable --now systemd-resolved.service
