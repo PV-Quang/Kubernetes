@@ -5,9 +5,9 @@ set -euo pipefail
 # CUSTOMER CONFIGURATION (EDIT HERE ONLY)
 ########################################
 # ---- Network ----
-NET_IFACE="ens192"
+NET_IFACE="ens191"
 NET="20.0.0.0"
-IP_ADDR="20.0.0.250"
+IP_ADDR="20.0.0.251"
 CIDR="24"
 GATEWAY="20.0.0.1"
 DNS_ADDR="8.8.8.8"
@@ -16,7 +16,7 @@ RE_ZONE="0.0.20"
 DNS_NAME="dns01"
 
 # ---- Hostname ----
-HOSTNAME_FQDN="${DNS_NAME}.k8s.local"
+HOSTNAME_FQDN="${DNS_NAME}.${DNS_SEARCH}"
 
 ########################################
 # END CUSTOMER CONFIGURATION
