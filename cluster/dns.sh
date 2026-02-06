@@ -7,7 +7,7 @@ set -euo pipefail
 # ---- Network ----
 NET_IFACE="ens192"
 NET="20.0.0.0"
-IP_ADDR="20.0.0.251"
+IP_ADDR="20.0.0.250"
 CIDR="24"
 GATEWAY="20.0.0.1"
 DNS_ADDR="8.8.8.8"
