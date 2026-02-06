@@ -68,6 +68,7 @@ done
 echo "[INFO] Waiting for update..."
 sleep 20
 apt update -y && apt upgrade -y
+sleep 3
 apt install -y chrony
 systemctl enable --now chrony
 
@@ -100,7 +101,7 @@ include "/etc/bind/named.conf.default-zones";
 include "/etc/bind/named.conf.internal-zones";
 EOF
 
-cat > /etc/bind/named.conf.options <<'EOF'
+cat > /etc/bind/named.conf.options <<EOF
 acl internal-network {
         ${NET}/${CIDR};
 };
@@ -111,7 +112,7 @@ options {
 };
 EOF
 
-cat > /etc/bind/named.conf.internal-zones <<'EOF'
+cat > /etc/bind/named.conf.internal-zones <<EOF
 zone "${DNS_SEARCH}" IN {
         type primary;
         file "/etc/bind/${DNS_SEARCH}";
@@ -124,7 +125,7 @@ zone "${RE_ZONE}.in-addr.arpa" IN {
 };
 EOF
 
-cat > /etc/default/named <<'EOF'
+cat > /etc/default/named <<EOF
 # run resolvconf?
 #RESOLVCONF=no
 
@@ -133,7 +134,7 @@ cat > /etc/default/named <<'EOF'
 OPTIONS="-u bind -4"
 EOF
 
-cat > /etc/bind/${DNS_SEARCH} <<'EOF'
+cat > /etc/bind/${DNS_SEARCH} <<EOF
 $TTL 86400
 @   IN  SOA     ${DNS_NAME}.${DNS_SEARCH}. root.${DNS_SEARCH}. (
         ;; any numerical values are OK for serial number
@@ -151,7 +152,7 @@ ${DNS_NAME}              IN  A       ${IP_ADDR}
 master01         IN  A       20.0.0.11
 EOF
 
-cat > /etc/bind/${RE_ZONE}.db <<'EOF'
+cat > /etc/bind/${RE_ZONE}.db <<EOF
 $TTL 86400
 @   IN  SOA     ${DNS_NAME}.${DNS_SEARCH}. root.${DNS_SEARCH}. (
         2024042901  ;Serial
