@@ -135,7 +135,7 @@ OPTIONS="-u bind -4"
 EOF
 
 cat > /etc/bind/${DNS_SEARCH} <<EOF
-$TTL 86400
+\$TTL 86400
 @   IN  SOA     ${DNS_NAME}.${DNS_SEARCH}. root.${DNS_SEARCH}. (
         ;; any numerical values are OK for serial number
         ;; recommended : [YYYYMMDDnn] (update date + number)
@@ -153,7 +153,7 @@ master01         IN  A       20.0.0.11
 EOF
 
 cat > /etc/bind/${RE_ZONE}.db <<EOF
-$TTL 86400
+\$TTL 86400
 @   IN  SOA     ${DNS_NAME}.${DNS_SEARCH}. root.${DNS_SEARCH}. (
         2024042901  ;Serial
         3600        ;Refresh
