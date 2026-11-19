@@ -198,9 +198,9 @@ sudo kubeadm init \
 kubeadm init \
 --pod-network-cidr 192.168.0.0/16 \
 --service-cidr 10.96.0.0/12 \
---control-plane-endpoint tke-k8s.tanlv.io.vn:6443 \
+--control-plane-endpoint tke-k8s.quangpv.com:6443 \
 --apiserver-cert-extra-sans tke-k8s.k8s.local \
---apiserver-cert-extra-sans tke-k8s.tanlv.io.vn \
+--apiserver-cert-extra-sans tke-k8s.quangpv.com \
 --apiserver-cert-extra-sans 10.0.0.30 \
 --apiserver-cert-extra-sans master01 \
 --apiserver-cert-extra-sans master02 \
