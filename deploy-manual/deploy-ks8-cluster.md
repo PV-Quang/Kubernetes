@@ -517,7 +517,7 @@ vi pvc-pod-test.yaml
 ```
 
 ```
-aapiVersion: v1
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pvc-nfs-csi
